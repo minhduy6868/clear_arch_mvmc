@@ -11,7 +11,15 @@ class NoteUseCase(private val repository: NoteRepository) {   // xử li logic n
         repository.insertNote(Note(title, content))
     }
 
+    suspend fun updateNote(title: String, content: String) {
+        repository.updateNote(Note(title, content))
+    }
+
     suspend fun deleteNote(note: Note) {
         repository.deleteNote(note)
     }
+
+    fun searchNotes(query: String): Flow<List<Note>> = repository.searchNotes(query)
+
+    suspend fun getNoteById(id: Int): Note? = repository.getNoteById(id)
 }

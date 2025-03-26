@@ -10,8 +10,15 @@ class NoteRepository(private val noteDao: NoteDao) {   // Quảng lí dữ liêu
     suspend fun insertNote(note: Note) {
         noteDao.upsertNote(note)
     }
+suspend fun updateNote(note: Note) {
+    noteDao.updateNote(note)
+}
 
     suspend fun deleteNote(note: Note) {
         noteDao.deleteNote(note)
     }
+
+    fun searchNotes(query: String): Flow<List<Note>> = noteDao.searchNotes("%$query%")
+
+    suspend fun getNoteById(id: Int): Note? = noteDao.getNoteById(id)
 }
