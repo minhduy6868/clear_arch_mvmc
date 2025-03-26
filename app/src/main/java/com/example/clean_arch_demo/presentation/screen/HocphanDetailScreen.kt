@@ -23,26 +23,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.clean_arch_demo.data.local.Note
+import com.example.clean_arch_demo.data.local.Hocphan
 
 @Composable
-fun NoteDetailScreen(
-    note: Note,
+fun HocphanDetailScreen(
+    hocphan: Hocphan,
     isEditing: Boolean,
     onBack: () -> Unit,
     onEditToggle: () -> Unit,
-    onSave: (Note) -> Unit,
+    onSave: (Hocphan) -> Unit,
     onCancel: () -> Unit
 ) {
     if (isEditing) {
-        NoteEditContent(
-            note = note,
+        HocphanEditContent(
+            hocphan = hocphan,
             onSave = onSave,
             onCancel = onCancel
         )
     } else {
-        NoteViewContent(
-            note = note,
+        HocphanViewContent(
+            hocphan = hocphan,
             onBack = onBack,
             onEditToggle = onEditToggle
         )
@@ -50,8 +50,8 @@ fun NoteDetailScreen(
 }
 
 @Composable
-private fun NoteViewContent(
-    note: Note,
+private fun HocphanViewContent(
+    hocphan: Hocphan,
     onBack: () -> Unit,
     onEditToggle: () -> Unit
 ) {
@@ -71,27 +71,35 @@ private fun NoteViewContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = note.noteName,
+            text = hocphan.tenhocphan,
             style = MaterialTheme.typography.headlineMedium
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = note.noteBody,
+            text = "Số tín chỉ: ${hocphan.sotinchi}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Học kỳ: ${hocphan.hocky}",
             style = MaterialTheme.typography.bodyLarge
         )
     }
 }
 
 @Composable
-private fun NoteEditContent(
-    note: Note,
-    onSave: (Note) -> Unit,
+private fun HocphanEditContent(
+    hocphan: Hocphan,
+    onSave: (Hocphan) -> Unit,
     onCancel: () -> Unit
 ) {
-    var title by remember { mutableStateOf(note.noteName) }
-    var content by remember { mutableStateOf(note.noteBody) }
+    var ten by remember { mutableStateOf(hocphan.tenhocphan) }
+    var tinChi by remember { mutableStateOf(hocphan.sotinchi.toString()) }
+    var kyHoc by remember { mutableStateOf(hocphan.hocky) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
@@ -102,7 +110,14 @@ private fun NoteEditContent(
                 Text("Hủy")
             }
             Button(onClick = {
-                onSave(Note(title, content, note.noteId))
+                onSave(
+                    Hocphan(
+                        tenhocphan = ten,
+                        sotinchi = tinChi.toIntOrNull() ?: 0,
+                        hocky = kyHoc,
+                        mahocphan = hocphan.mahocphan
+                    )
+                )
             }) {
                 Text("Lưu")
             }
@@ -111,20 +126,28 @@ private fun NoteEditContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = title,
-            onValueChange = { title = it },
-            label = { Text("Tiêu đề") },
+            value = ten,
+            onValueChange = { ten = it },
+            label = { Text("Tên học phần") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = content,
-            onValueChange = { content = it },
-            label = { Text("Nội dung") },
-            modifier = Modifier.fillMaxWidth(),
-            minLines = 5
+            value = tinChi,
+            onValueChange = { tinChi = it },
+            label = { Text("Số tín chỉ") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = kyHoc,
+            onValueChange = { kyHoc = it },
+            label = { Text("Học kỳ") },
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
