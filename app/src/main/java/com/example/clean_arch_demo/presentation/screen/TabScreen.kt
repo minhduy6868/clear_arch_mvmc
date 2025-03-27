@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,10 +39,11 @@ fun TabScreen(viewModel: MaytinhViewModel) {
 
     // Danh sách các tab
     val tabs = listOf(
-        TabItem("Máy tính", R.drawable.ic_launcher_foreground), // Replace with your actual icons
-        TabItem("Số hoàn hảo", R.drawable.ic_launcher_background),
-        TabItem("Phương trình", R.drawable.ic_launcher_foreground)
+        TabItem("Máy tính",  Icons.Default.Home), // Replace with your actual icons
+        TabItem("Số hoàn hảo", Icons.Default.Build),
+        TabItem("Phương trình", Icons.Default.Edit)
     )
+
 
     Scaffold(
         bottomBar = {
@@ -47,7 +52,7 @@ fun TabScreen(viewModel: MaytinhViewModel) {
                     NavigationBarItem(
                         icon = {
                             Icon(
-                                imageVector = ImageVector.vectorResource(id = tab.icon),
+                                imageVector = tab.icon, // Directly using the ImageVector
                                 contentDescription = tab.title
                             )
                         },
@@ -186,5 +191,5 @@ fun solveLinearEquation(a: Double, b: Double): String {
 // Data class cho mỗi tab item
 data class TabItem(
     val title: String,
-    val icon: Int
+    val icon: ImageVector
 )
