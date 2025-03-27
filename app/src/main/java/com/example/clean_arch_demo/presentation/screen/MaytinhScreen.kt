@@ -15,10 +15,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -63,7 +66,31 @@ fun MaytinhScreen(viewModel: MaytinhViewModel) {
                             Icon(Icons.Default.Edit, contentDescription = "Chỉnh sửa")
                         }
                     }
+
+//                    // Nút menu dropdown
+//                    IconButton(onClick = { expanded = true }) {
+//                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+//                    }
+//
+//                    DropdownMenu(
+//                        expanded = expanded,
+//                        onDismissRequest = { expanded = false }
+//                    ) {
+//                        DropdownMenuItem(
+//                            text = { Text("Giới thiệu") },
+//                            onClick = {
+//                                expanded = false
+//                                showDialog = true // Mở popup
+//                            }
+//                        )
+//                        DropdownMenuItem(
+//                            text = { Text("Điều lệ và bản quyền") },
+//                            onClick = { }
+//                        )
+//                    }
                 }
+
+
             )
         }
     ) { paddingValues ->
