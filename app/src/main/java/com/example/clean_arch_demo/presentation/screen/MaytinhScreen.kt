@@ -36,28 +36,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.clean_arch_demo.data.local.Hocphan
-import com.example.clean_arch_demo.presentation.view_model.HocphanViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.clean_arch_demo.data.local.Maytinh
+import com.example.clean_arch_demo.presentation.view_model.MaytinhViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HocphanScreen(viewModel: HocphanViewModel) {
-    var tenHocPhan by remember { mutableStateOf("") }
-    var soTinChi by remember { mutableStateOf("") }
-    var hocKy by remember { mutableStateOf("") }
+fun MaytinhScreen(viewModel: MaytinhViewModel) {
+    var tenMay by remember { mutableStateOf("") }
+    var soLuong by remember { mutableStateOf("") }
+    var donGia by remember { mutableStateOf("") }
+    var loaiMay by remember { mutableStateOf("") }
 
-    val danhSachHocPhan by viewModel.danhSachHocPhan.collectAsStateWithLifecycle()
+    val danhSachMaytinh by viewModel.danhSachMaytinh.collectAsStateWithLifecycle()
     val tuKhoaTimKiem by viewModel.tuKhoaTimKiem.collectAsStateWithLifecycle()
-    val hocPhanDuocChon by viewModel.hocPhanDuocChon.collectAsStateWithLifecycle()
+    val maytinhDuocChon by viewModel.maytinhDuocChon.collectAsStateWithLifecycle()
     val dangChinhSua by viewModel.dangChinhSua.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Quản lý học sinh") },
+                title = { Text("Quản lý máy tính") },
                 actions = {
-                    if (hocPhanDuocChon != null && !dangChinhSua) {
+                    if (maytinhDuocChon != null && !dangChinhSua) {
                         IconButton(onClick = { viewModel.batDauChinhSua() }) {
                             Icon(Icons.Default.Edit, contentDescription = "Chỉnh sửa")
                         }
@@ -72,23 +73,25 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
                 .padding(16.dp)
         ) {
             when {
-                hocPhanDuocChon != null && dangChinhSua -> {
-                    HocphanEditContent(
-                        hocphan = hocPhanDuocChon!!,
-                        onSave = { updatedHocphan ->
-                            viewModel.capNhatHocPhan(updatedHocphan)
+                maytinhDuocChon != null && dangChinhSua -> {
+                    MaytinhEditContent(
+                        maytinh = maytinhDuocChon!!,
+                        onSave = { updatedMaytinh ->
+                            viewModel.capNhatMaytinh(updatedMaytinh)
                         },
                         onCancel = {
                             viewModel.huyChinhSua()
                         }
                     )
                 }
-                hocPhanDuocChon != null -> {
-                    HocphanViewContent(
-                        hocphan = hocPhanDuocChon!!,
-                        onBack = { viewModel.xoaHocPhanDuocChon() }
+
+                maytinhDuocChon != null -> {
+                    MaytinhViewContent(
+                        maytinh = maytinhDuocChon!!,
+                        onBack = { viewModel.xoaMaytinhDuocChon() }
                     )
                 }
+
                 else -> {
                     // Search bar
                     OutlinedTextField(
@@ -109,27 +112,34 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             OutlinedTextField(
-                                value = tenHocPhan,
-                                onValueChange = { tenHocPhan = it },
-                                label = { Text("Tên học sinh") },
+                                value = tenMay,
+                                onValueChange = { tenMay = it },
+                                label = { Text("Tên máy") },
                                 modifier = Modifier.fillMaxWidth()
                             )
 
                             Spacer(modifier = Modifier.height(8.dp))
 
                             OutlinedTextField(
-                                value = soTinChi,
-                                onValueChange = { soTinChi = it },
-                                label = { Text("Số tín chỉ") },
+                                value = soLuong,
+                                onValueChange = { soLuong = it },
+                                label = { Text("Số lượng") },
                                 modifier = Modifier.fillMaxWidth()
                             )
 
                             Spacer(modifier = Modifier.height(8.dp))
 
                             OutlinedTextField(
-                                value = hocKy,
-                                onValueChange = { hocKy = it },
-                                label = { Text("Học kỳ") },
+                                value = donGia,
+                                onValueChange = { donGia = it },
+                                label = { Text("Đơn giá") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedTextField(
+                                value = loaiMay,
+                                onValueChange = { loaiMay = it },
+                                label = { Text("Loại máy") },
                                 modifier = Modifier.fillMaxWidth()
                             )
 
@@ -137,20 +147,22 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
 
                             Button(
                                 onClick = {
-                                    if (tenHocPhan.isNotEmpty() && soTinChi.isNotEmpty() && hocKy.isNotEmpty()) {
-                                        viewModel.themHocPhan(
-                                            tenHocPhan,
-                                            soTinChi.toIntOrNull() ?: 0,
-                                            hocKy
+                                    if (tenMay.isNotEmpty() && soLuong.isNotEmpty() && donGia.isNotEmpty() && loaiMay.isNotEmpty()) {
+                                        viewModel.themMaytinh(
+                                            tenMay,
+                                            soLuong.toIntOrNull() ?: 0,
+                                            donGia.toDoubleOrNull() ?: 0.0,
+                                            loaiMay
                                         )
-                                        tenHocPhan = ""
-                                        soTinChi = ""
-                                        hocKy = ""
+                                        tenMay = ""
+                                        soLuong = ""
+                                        donGia = ""
+                                        loaiMay = ""
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("Thêm học phần")
+                                Text("Thêm máy tính")
                             }
                         }
                     }
@@ -158,20 +170,20 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // List
-                    if (danhSachHocPhan.isEmpty()) {
+                    if (danhSachMaytinh.isEmpty()) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Không có học phần nào")
+                            Text("Không có máy tính nào")
                         }
                     } else {
                         LazyColumn {
-                            items(danhSachHocPhan) { hocphan ->
-                                HocphanItem(
-                                    hocphan = hocphan,
-                                    onDelete = { viewModel.xoaHocPhan(hocphan) },
-                                    onClick = { viewModel.chonHocPhan(hocphan) }
+                            items(danhSachMaytinh) { maytinh ->
+                                MaytinhItem(
+                                    maytinh = maytinh,
+                                    onDelete = { viewModel.xoaMaytinh(maytinh) },
+                                    onClick = { viewModel.chonMaytinh(maytinh) }
                                 )
                             }
                         }
@@ -183,8 +195,8 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
 }
 
 @Composable
-private fun HocphanViewContent(
-    hocphan: Hocphan,
+private fun MaytinhViewContent(
+    maytinh: Maytinh,
     onBack: () -> Unit
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -195,35 +207,41 @@ private fun HocphanViewContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = hocphan.tenhocphan,
+            text = maytinh.tenmay,
             style = MaterialTheme.typography.headlineMedium
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Số tín chỉ: ${hocphan.sotinchi}",
+            text = "Số lượng: ${maytinh.soluong}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Đơn giá: ${maytinh.dongia}",
             style = MaterialTheme.typography.bodyLarge
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Học kỳ: ${hocphan.hocky}",
+            text = "Loại máy: ${maytinh.loaimay}",
             style = MaterialTheme.typography.bodyLarge
         )
     }
 }
 
 @Composable
-private fun HocphanEditContent(
-    hocphan: Hocphan,
-    onSave: (Hocphan) -> Unit,
+private fun MaytinhEditContent(
+    maytinh: Maytinh,
+    onSave: (Maytinh) -> Unit,
     onCancel: () -> Unit
 ) {
-    var ten by remember { mutableStateOf(hocphan.tenhocphan) }
-    var tinChi by remember { mutableStateOf(hocphan.sotinchi.toString()) }
-    var kyHoc by remember { mutableStateOf(hocphan.hocky) }
+    var tenMay by remember { mutableStateOf(maytinh.tenmay) }
+    var soLuong by remember { mutableStateOf(maytinh.soluong.toString()) }
+    var donGia by remember { mutableStateOf(maytinh.dongia.toString()) }
+    var loaiMay by remember { mutableStateOf(maytinh.loaimay) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
@@ -235,11 +253,12 @@ private fun HocphanEditContent(
             }
             Button(onClick = {
                 onSave(
-                    Hocphan(
-                        tenhocphan = ten,
-                        sotinchi = tinChi.toIntOrNull() ?: 0,
-                        hocky = kyHoc,
-                        mahocphan = hocphan.mahocphan
+                    Maytinh(
+                        tenmay = tenMay,
+                        soluong = soLuong.toIntOrNull() ?: 0,
+                        dongia = donGia.toDoubleOrNull() ?: 0.0,
+                        loaimay = loaiMay,
+                        mamay = maytinh.mamay
                     )
                 )
             }) {
@@ -250,43 +269,52 @@ private fun HocphanEditContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = ten,
-            onValueChange = { ten = it },
-            label = { Text("Tên học phần") },
+            value = tenMay,
+            onValueChange = { tenMay = it },
+            label = { Text("Tên máy") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = tinChi,
-            onValueChange = { tinChi = it },
-            label = { Text("Số tín chỉ") },
+            value = soLuong,
+            onValueChange = { soLuong = it },
+            label = { Text("Số lượng") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = kyHoc,
-            onValueChange = { kyHoc = it },
-            label = { Text("Học kỳ") },
+            value = donGia,
+            onValueChange = { donGia = it },
+            label = { Text("Đơn giá") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = loaiMay,
+            onValueChange = { loaiMay = it },
+            label = { Text("Loại máy") },
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun HocphanItem(
-    hocphan: Hocphan,
-    onDelete: (Hocphan) -> Unit,
-    onClick: (Hocphan) -> Unit
+fun MaytinhItem(
+    maytinh: Maytinh,
+    onDelete: (Maytinh) -> Unit,
+    onClick: (Maytinh) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .clickable { onClick(hocphan) },
+            .clickable { onClick(maytinh) },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -295,13 +323,13 @@ fun HocphanItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = hocphan.tenhocphan,
+                    text = maytinh.tenmay,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Button(
-                    onClick = { onDelete(hocphan) },
+                    onClick = { onDelete(maytinh) },
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error)
                 ) {
                     Text("Xóa")
@@ -309,7 +337,7 @@ fun HocphanItem(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "${hocphan.sotinchi} tín chỉ - Học kỳ ${hocphan.hocky}",
+                text = "SL: ${maytinh.soluong} - Giá: ${maytinh.dongia} - Loại: ${maytinh.loaimay}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }

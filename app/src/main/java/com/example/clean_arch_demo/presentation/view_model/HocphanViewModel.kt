@@ -2,38 +2,38 @@ package com.example.clean_arch_demo.presentation.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.clean_arch_demo.data.local.Hocphan
-import com.example.clean_arch_demo.domain.usecase.HocphanUseCase
+import com.example.clean_arch_demo.data.local.Maytinh
+import com.example.clean_arch_demo.domain.usecase.MaytinhUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class HocphanViewModel(private val useCase: HocphanUseCase) : ViewModel() {
-    private val _danhSachHocPhan = MutableStateFlow<List<Hocphan>>(emptyList())
-    val danhSachHocPhan = _danhSachHocPhan.asStateFlow()
+class MaytinhViewModel(private val useCase: MaytinhUseCase) : ViewModel() {
+    private val _danhSachMaytinh = MutableStateFlow<List<Maytinh>>(emptyList())
+    val danhSachMaytinh = _danhSachMaytinh.asStateFlow()
 
     private val _tuKhoaTimKiem = MutableStateFlow("")
     val tuKhoaTimKiem = _tuKhoaTimKiem.asStateFlow()
 
-    private val _hocPhanDuocChon = MutableStateFlow<Hocphan?>(null)
-    val hocPhanDuocChon = _hocPhanDuocChon.asStateFlow()
+    private val _maytinhDuocChon = MutableStateFlow<Maytinh?>(null)
+    val maytinhDuocChon = _maytinhDuocChon.asStateFlow()
 
     private val _dangChinhSua = MutableStateFlow(false)
     val dangChinhSua = _dangChinhSua.asStateFlow()
 
     init {
-        taiDanhSachHocPhan()
+        taiDanhSachMaytinh()
     }
 
-    fun taiDanhSachHocPhan() {
+    fun taiDanhSachMaytinh() {
         viewModelScope.launch {
             if (_tuKhoaTimKiem.value.isEmpty()) {
-                useCase.getAllHocPhan().collect { danhSach ->
-                    _danhSachHocPhan.value = danhSach
+                useCase.getAllMaytinh().collect { danhSach ->
+                    _danhSachMaytinh.value = danhSach
                 }
             } else {
-                useCase.searchHocPhan(_tuKhoaTimKiem.value).collect { danhSach ->
-                    _danhSachHocPhan.value = danhSach
+                useCase.searchMaytinh(_tuKhoaTimKiem.value).collect { danhSach ->
+                    _danhSachMaytinh.value = danhSach
                 }
             }
         }
@@ -41,11 +41,11 @@ class HocphanViewModel(private val useCase: HocphanUseCase) : ViewModel() {
 
     fun datTuKhoaTimKiem(tuKhoa: String) {
         _tuKhoaTimKiem.value = tuKhoa
-        taiDanhSachHocPhan()
+        taiDanhSachMaytinh()
     }
 
-    fun chonHocPhan(hocphan: Hocphan) {
-        _hocPhanDuocChon.value = hocphan
+    fun chonMaytinh(maytinh: Maytinh) {
+        _maytinhDuocChon.value = maytinh
         _dangChinhSua.value = false
     }
 
@@ -57,38 +57,40 @@ class HocphanViewModel(private val useCase: HocphanUseCase) : ViewModel() {
         _dangChinhSua.value = false
     }
 
-    fun xoaHocPhanDuocChon() {
-        _hocPhanDuocChon.value = null
+    fun xoaMaytinhDuocChon() {
+        _maytinhDuocChon.value = null
         _dangChinhSua.value = false
     }
 
-    fun themHocPhan(tenHocPhan: String, soTinChi: Int, hocKy: String) {
+    fun themMaytinh(tenMay: String, soLuong: Int, donGia: Double, loaiMay: String) {
         viewModelScope.launch {
-            useCase.addHocPhan(tenHocPhan, soTinChi, hocKy)
-            taiDanhSachHocPhan()
+            useCase.addMaytinh(tenMay, donGia, loaiMay, soLuong)
+            taiDanhSachMaytinh()
         }
     }
 
-    fun capNhatHocPhan(hocphanDaCapNhat: Hocphan) {
+    fun capNhatMaytinh(maytinhDaCapNhat: Maytinh) {
         viewModelScope.launch {
-            useCase.updateHocPhan(
-                tenhocphan = hocphanDaCapNhat.tenhocphan,
-                sotinchi = hocphanDaCapNhat.sotinchi,
-                hocky = hocphanDaCapNhat.hocky
+            useCase.updateMaytinh(
+               // mamay = maytinhDaCapNhat.mamay,
+                tenmay = maytinhDaCapNhat.tenmay,
+                dongia = maytinhDaCapNhat.dongia,
+                soluong = maytinhDaCapNhat.soluong,
+                loaimay = maytinhDaCapNhat.loaimay
             )
-            _hocPhanDuocChon.value = hocphanDaCapNhat
+            _maytinhDuocChon.value = maytinhDaCapNhat
             _dangChinhSua.value = false
-            taiDanhSachHocPhan()
+            taiDanhSachMaytinh()
         }
     }
 
-    fun xoaHocPhan(hocphan: Hocphan) {
+    fun xoaMaytinh(maytinh: Maytinh) {
         viewModelScope.launch {
-            useCase.deleteHocPhan(hocphan)
-            if (_hocPhanDuocChon.value?.mahocphan == hocphan.mahocphan) {
-                xoaHocPhanDuocChon()
+            useCase.deleteMaytinh(maytinh)
+            if (_maytinhDuocChon.value?.mamay == maytinh.mamay) {
+                xoaMaytinhDuocChon()
             }
-            taiDanhSachHocPhan()
+            taiDanhSachMaytinh()
         }
     }
 }

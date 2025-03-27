@@ -23,26 +23,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.clean_arch_demo.data.local.Hocphan
+import com.example.clean_arch_demo.data.local.Maytinh
 
 @Composable
-fun HocphanDetailScreen(
-    hocphan: Hocphan,
+fun MaytinhDetailScreen(
+    maytinh: Maytinh,
     isEditing: Boolean,
     onBack: () -> Unit,
     onEditToggle: () -> Unit,
-    onSave: (Hocphan) -> Unit,
+    onSave: (Maytinh) -> Unit,
     onCancel: () -> Unit
 ) {
     if (isEditing) {
-        HocphanEditContent(
-            hocphan = hocphan,
+        MaytinhEditContent(
+            maytinh = maytinh,
             onSave = onSave,
             onCancel = onCancel
         )
     } else {
-        HocphanViewContent(
-            hocphan = hocphan,
+        MaytinhViewContent(
+            maytinh = maytinh,
             onBack = onBack,
             onEditToggle = onEditToggle
         )
@@ -50,8 +50,8 @@ fun HocphanDetailScreen(
 }
 
 @Composable
-private fun HocphanViewContent(
-    hocphan: Hocphan,
+private fun MaytinhViewContent(
+    maytinh: Maytinh,
     onBack: () -> Unit,
     onEditToggle: () -> Unit
 ) {
@@ -71,35 +71,43 @@ private fun HocphanViewContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = hocphan.tenhocphan,
+            text = maytinh.tenmay,
             style = MaterialTheme.typography.headlineMedium
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Số tín chỉ: ${hocphan.sotinchi}",
+            text = "Đơn giá - nhâp dạng so: ${maytinh.dongia}",
             style = MaterialTheme.typography.bodyLarge
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Học kỳ: ${hocphan.hocky}",
+            text = "Loại máy: ${maytinh.loaimay}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Số lượng - dạng số: ${maytinh.soluong}",
             style = MaterialTheme.typography.bodyLarge
         )
     }
 }
 
 @Composable
-private fun HocphanEditContent(
-    hocphan: Hocphan,
-    onSave: (Hocphan) -> Unit,
+private fun MaytinhEditContent(
+    maytinh: Maytinh,
+    onSave: (Maytinh) -> Unit,
     onCancel: () -> Unit
 ) {
-    var ten by remember { mutableStateOf(hocphan.tenhocphan) }
-    var tinChi by remember { mutableStateOf(hocphan.sotinchi.toString()) }
-    var kyHoc by remember { mutableStateOf(hocphan.hocky) }
+    var tenMay by remember { mutableStateOf(maytinh.tenmay) }
+    var donGia by remember { mutableStateOf(maytinh.dongia.toString()) }
+    var loaiMay by remember { mutableStateOf(maytinh.loaimay) }
+    var soLuong by remember { mutableStateOf(maytinh.soluong.toString()) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
@@ -111,11 +119,12 @@ private fun HocphanEditContent(
             }
             Button(onClick = {
                 onSave(
-                    Hocphan(
-                        tenhocphan = ten,
-                        sotinchi = tinChi.toIntOrNull() ?: 0,
-                        hocky = kyHoc,
-                        mahocphan = hocphan.mahocphan
+                    Maytinh(
+                        tenmay = tenMay,
+                        dongia = donGia.toDoubleOrNull() ?: 0.0,
+                        loaimay = loaiMay,
+                        soluong = soLuong.toIntOrNull() ?: 0,
+                        mamay = maytinh.mamay
                     )
                 )
             }) {
@@ -126,27 +135,36 @@ private fun HocphanEditContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = ten,
-            onValueChange = { ten = it },
-            label = { Text("Tên học phần") },
+            value = tenMay,
+            onValueChange = { tenMay = it },
+            label = { Text("Tên máy") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = tinChi,
-            onValueChange = { tinChi = it },
-            label = { Text("Số tín chỉ") },
+            value = donGia,
+            onValueChange = { donGia = it },
+            label = { Text("Đơn giá") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = kyHoc,
-            onValueChange = { kyHoc = it },
-            label = { Text("Học kỳ") },
+            value = loaiMay,
+            onValueChange = { loaiMay = it },
+            label = { Text("Loại máy") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = soLuong,
+            onValueChange = { soLuong = it },
+            label = { Text("Số lượng") },
             modifier = Modifier.fillMaxWidth()
         )
     }

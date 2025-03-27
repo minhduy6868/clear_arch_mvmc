@@ -7,20 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.clean_arch_demo.data.local.HocphanDatabase
-import com.example.clean_arch_demo.data.repository.HocphanRepository
-import com.example.clean_arch_demo.domain.usecase.HocphanUseCase
+import com.example.clean_arch_demo.data.local.MaytinhDatabase
+import com.example.clean_arch_demo.data.repository.MaytinhRepository
+import com.example.clean_arch_demo.domain.usecase.MaytinhUseCase
 import com.example.clean_arch_demo.presentation.screen.TabScreen
-import com.example.clean_arch_demo.presentation.view_model.HocphanViewModel
+import com.example.clean_arch_demo.presentation.view_model.MaytinhViewModel
 import com.example.clean_arch_demo.ui.theme.Clean_arch_demoTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val noteDao = HocphanDatabase.getInstance(this).hocphanDao()
-        val repository = HocphanRepository(noteDao)
-        val useCase = HocphanUseCase(repository)
-        val viewModel = HocphanViewModel(useCase)
+        val noteDao = MaytinhDatabase.getInstance(this).maytinhDao()
+        val repository = MaytinhRepository(noteDao)
+        val useCase = MaytinhUseCase(repository)
+        val viewModel = MaytinhViewModel(useCase)
 
         setContent {
             Clean_arch_demoTheme {

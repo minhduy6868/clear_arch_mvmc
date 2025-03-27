@@ -20,17 +20,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import com.example.clean_arch_demo.R
-import com.example.clean_arch_demo.presentation.view_model.HocphanViewModel
+import com.example.clean_arch_demo.presentation.view_model.MaytinhViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TabScreen(viewModel: HocphanViewModel) {
+fun TabScreen(viewModel: MaytinhViewModel) {
     var selectedTab by remember { mutableStateOf(0) }
 
     // Danh sách các tab
     val tabs = listOf(
         TabItem("Học phần", R.drawable.ic_launcher_foreground), // Thay bằng icon thực tế
-        TabItem("Khác", R.drawable.ic_launcher_background) // Thay bằng icon thực tế
+        TabItem("Số hoàn hảo", R.drawable.ic_launcher_background),
+        TabItem("ax + b", R.drawable.ic_launcher_foreground )
     )
 
     Scaffold(
@@ -58,15 +59,16 @@ fun TabScreen(viewModel: HocphanViewModel) {
                 .padding(paddingValues)
         ) {
             when (selectedTab) {
-                0 -> HocphanScreen(viewModel)
-                1 -> OtherTabScreen()
+                0 -> MaytinhScreen(viewModel)
+                1 -> HoanhaoTabScreen()
+                2 -> PhuongtrinhTabScreen()
             }
         }
     }
 }
 
 @Composable
-fun OtherTabScreen() {
+fun HoanhaoTabScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -80,3 +82,7 @@ data class TabItem(
     val title: String,
     val icon: Int
 )
+
+@Composable
+fun PhuongtrinhTabScreen() {
+}

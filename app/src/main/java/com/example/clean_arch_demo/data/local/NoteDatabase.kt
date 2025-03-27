@@ -5,20 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Hocphan::class], version = 1, exportSchema = false)
-abstract class HocphanDatabase : RoomDatabase() {   // Taạo Rooomdataabe
-    abstract fun hocphanDao(): HocphanDao
+@Database(entities = [Maytinh::class], version = 1, exportSchema = false)
+abstract class MaytinhDatabase : RoomDatabase() {   // Taạo Rooomdataabe
+    abstract fun maytinhDao(): MaytinhDao
 
     companion object {
         @Volatile
-        private var INSTANCE: HocphanDatabase? = null
+        private var INSTANCE: MaytinhDatabase? = null
 
-        fun getInstance(context: Context): HocphanDatabase {
+        fun getInstance(context: Context):MaytinhDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    HocphanDatabase::class.java,
-                    "hocphan_database"
+                    MaytinhDatabase::class.java,
+                    "maytinh_database"
                 ).build()
                 INSTANCE = instance
                 instance
