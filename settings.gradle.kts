@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "clean_arch_demo"
+rootProject.name = "23it038_nguyenminhduy"
 include(":app")
  

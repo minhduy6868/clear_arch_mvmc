@@ -1,5 +1,6 @@
 package com.example.clean_arch_demo.presentation.screen
 
+import android.view.MenuItem
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,10 +16,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,6 +58,24 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
     val hocPhanDuocChon by viewModel.hocPhanDuocChon.collectAsStateWithLifecycle()
     val dangChinhSua by viewModel.dangChinhSua.collectAsStateWithLifecycle()
 
+    var expanded by remember { mutableStateOf(false) }
+
+
+    var showDialog by remember { mutableStateOf(false) }
+    // Hiển thị Popup khi showDialog = true
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Đóng")
+                }
+            },
+            title = { Text("Giới thiệu") },
+            text = { Text("Ứng dụng quản lý học sinh phiên bản 1.0") }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,9 +86,31 @@ fun HocphanScreen(viewModel: HocphanViewModel) {
                             Icon(Icons.Default.Edit, contentDescription = "Chỉnh sửa")
                         }
                     }
+
+                    // Nút menu dropdown
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Giới thiệu") },
+                            onClick = {
+                                expanded = false
+                                showDialog = true // Mở popup
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Điều lệ và bản quyền") },
+                            onClick = { }
+                        )
+                    }
                 }
             )
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -314,4 +360,6 @@ fun HocphanItem(
             )
         }
     }
+
 }
+
